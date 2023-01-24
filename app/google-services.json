@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "947757751566",
+    "firebase_url": "https://autodo-8f5ff-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "autodo-8f5ff",
+    "storage_bucket": "autodo-8f5ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947757751566:android:9e44d8baf4d8ce94410b5f",
+        "android_client_info": {
+          "package_name": "com.example.autodo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947757751566-cbj6bvoq6906hgav9qmrgq6reifd654h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP_ggQEFCRMSuC8b4Tk1MwRjYL7Q4sqPU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947757751566-141jr4lboh3ri9vtppktj8skipi5iq4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

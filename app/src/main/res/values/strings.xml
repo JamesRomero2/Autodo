@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Autodo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="levelOfUrgencyEntries">
+        <item>Highest Priority</item>
+        <item>High Priority</item>
+        <item>Mid Priority</item>
+        <item>Low Priority</item>
+    </string-array>
+</resources>
