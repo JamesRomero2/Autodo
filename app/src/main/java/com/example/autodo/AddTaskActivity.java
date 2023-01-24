@@ -124,7 +124,7 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(AddTaskActivity.this, "Task Saved", Toast.LENGTH_SHORT).show();
-                    finish();
+                    clearField();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -133,5 +133,11 @@ public class AddTaskActivity extends AppCompatActivity implements DatePickerDial
                 Toast.makeText(AddTaskActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void clearField() {
+        taskName.setText("");
+        taskDetails.setText("");
+        date.setText("");
     }
 }

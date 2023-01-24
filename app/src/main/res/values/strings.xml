@@ -8,4 +8,12 @@
         <item>Mid Priority</item>
         <item>Low Priority</item>
     </string-array>
+    <string-array name="categories">
+        <item>All Task</item>
+        <item>Today\'s Task</item>
+        <item>I Urgency</item>
+        <item>II Urgency</item>
+        <item>III Urgency</item>
+        <item>IV Urgency</item>
+    </string-array>
 </resources>

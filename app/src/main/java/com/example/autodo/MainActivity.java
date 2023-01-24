@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -26,7 +29,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +49,11 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     GoogleSignInOptions googleSignInOptions;
     static GoogleSignInClient googleSignInClient;
-
+    private RecyclerView recyclerView;
+    private RecyclerAdapter adapter;
+    private List<TaskData> dataList;
+    private DatabaseReference databaseReference;
+    ValueEventListener eventListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +62,16 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         textViewProfile = (TextView) findViewById(R.id.textView6);
         imageViewProfile = (ImageView) findViewById(R.id.imageView5);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler);
+        dataList = new ArrayList<>();
 
         sharedPreferences = getSharedPreferences("THEME_MODE", Context.MODE_PRIVATE);
         nightMode = sharedPreferences.getBoolean("night", false);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+        adapter = new RecyclerAdapter(dataList, MainActivity.this);
+        recyclerView.setAdapter(adapter);
 
         if (nightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -64,12 +86,28 @@ public class MainActivity extends AppCompatActivity {
         if (account != null) {
             populateData(account);
         }
+        databaseReference = FirebaseDatabase.getInstance().getReference(account.getId());
+        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataList.clear();
+                for (DataSnapshot itemSnap: snapshot.getChildren()) {
+                    TaskData data = itemSnap.getValue(TaskData.class);
+                    data.setKey(itemSnap.getKey());
+                    dataList.add(data);
+                }
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
     private void populateData(GoogleSignInAccount account) {
         textViewProfile.setText(account.getDisplayName());
         Picasso.get().load(account.getPhotoUrl()).placeholder(R.drawable.logo_wouttext).into(imageViewProfile);
     }
-
     public static void closeDrawer(DrawerLayout drawerLayout) {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -78,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
     public void ClickProfile(View view) {
         redirectActivity(this, ProfileActivity.class);
     }
-
     public void changeTheme(View view) {
         if (nightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

@@ -8,6 +8,15 @@ public class TaskData {
     private String urgency;
     private String dateTimeDeadline;
     private boolean status;
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public TaskData(String googleId, String dateTimeCreated, String name, String details, String urgency, String dateTimeDeadline, boolean status) {
         this.googleId = googleId;
@@ -18,6 +27,7 @@ public class TaskData {
         this.dateTimeDeadline = dateTimeDeadline;
         this.status = status;
     }
+    public TaskData() {}
 
     public String getGoogleId() {
         return googleId;
